@@ -54,6 +54,7 @@ import { useRouter } from 'vue-router'
     });
     getVerifyUrl();
 
+    //访问后端异步
     const login = async ()=> {
         const res = await req.post('/security/login', data);
         ElMessage.success("成功登录!");

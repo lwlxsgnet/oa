@@ -17,14 +17,13 @@ import java.util.Map;
 @RestController
 public class LoginController {
 
+    //@Autowired方式不加final 不是 spring 推荐写法
     @Autowired
     private LoginService loginService;
     @Autowired
     private HttpServletRequest request;
     @Autowired
     private TokenUtils tokenUtils;
-    //@Autowired方式不加final不是 spring 推荐写法
-
     @PostMapping("/security/login")
     //@ReuqestBody 处理前端POST请求传来的Json对象
     public R<?> login(@RequestBody Map<String, String> loginDto) {
@@ -34,7 +33,7 @@ public class LoginController {
 
         CurrentUser currentuser = loginService.checkLogin(loginDto);
 
-        String userIp = request.getRemoteUser();
+        String userIp = request.getRemoteAddr();
 
         TokenUser tokenUser = new TokenUser(currentuser.getUserId(), currentuser.getUserName(), userIp);
 
