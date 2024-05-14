@@ -6,7 +6,7 @@
 
             <!--头像 -->
             <div style="display: flex; justify-content: center; margin-top: 20px;">
-                <el-avatar src="/public/avatar.jpeg" :size="150"></el-avatar>
+                <el-avatar :src="avatarUrl" :size="150"></el-avatar>
             </div>
 
             <!-- 菜单 -->
@@ -39,13 +39,20 @@
                 <div style="position: absolute; right: 100px; top: 2.5%;">
                     <el-dropdown @command="handleCommand">
                         <span style="border: none; outline: none; cursor: pointer;">
-                            [id:{{ currentUser.userId }}] 
-                            [name:{{ currentUser.userName }}]
+                            <!-- [id:{{ currentUser.userId }}]  -->
+                            {{ currentUser.userName }}
                             <el-icon class="el-icon-right">
                                 <CaretBottom />
                             </el-icon>
                         </span>
                         <template #dropdown>
+                                <!-- 不弹出对话框更新头像 省了一个vue
+                                <el-dropdown-item>
+                                    <el-upload :on-change="onChange" :show-file-list="false" :auto-upload="false" 
+                                                class="avatar-uploader"> 
+                                            更换头像
+                                    </el-upload>
+                                </el-dropdown-item> -->  
                             <el-dropdown-item command="avatar">修改头像</el-dropdown-item>
                             <el-dropdown-item command="pwd">修改密码</el-dropdown-item>
                             <el-dropdown-item command="exit">Log out</el-dropdown-item>
@@ -85,7 +92,7 @@
         </el-container>
     </el-container>
 
-    <avatar ref="avatarRef"></avatar>
+    <avatar ref="avatarRef" @update-ok="getAvatar"></avatar>
 </template>
 
 
@@ -97,7 +104,7 @@ import { apiBaseUrl, localTokenName } from '@/constants'
 import { ElMessage } from 'element-plus'
 
 //引入自定义组件
-import avatar from '@/views/security/home/avatar' 
+import avatar from '@/views/security/home/avatar.vue' 
 import req from '@/request/index.js'
 
     const avatarRef = ref(null);//avatarRef变量就代表了页面上以标签所示的avatar组件对象
@@ -118,22 +125,25 @@ import req from '@/request/index.js'
     }
 
     const currentUser = ref({});
+
     const getCurrentUser = async()=> {
         const res = await req.get('/security/home/currentuser');
         currentUser.value = res.data;
+        getAvatar(); //获得userid后调用，不能同时请求userid和请求头像
     }
+
     getCurrentUser();
 
     const handleCommand = command => {
         switch (command) {
             case 'avatar':
-                
+                avatarRef.value.open(currentUser.value);//调用avatar组件对象的open方法
                 break;
             case 'pwd':
                 
                 break;
             case 'exit':
-                console.log("点击了退出系统!");
+                //console.log("点击了退出系统!");
                 localStorage.removeItem(localTokenName);
                 ElMessage.success("您已成功退出系统!");
                 router.replace('/security/login');
@@ -141,9 +151,21 @@ import req from '@/request/index.js'
         }
     }
 
+    const avatarUrl = ref('');//当前头像Url
+
+    const getAvatar = async()=>{
+        try{
+            const blob = await req.get('/user/avatars/' + currentUser.value.userId, {
+                responseType: 'blob'
+            });
+            avatarUrl.value = URL.createObjectURL(blob);
+        }catch(err){
+            avatarUrl.value = '/avatar.jpeg'
+        }
+    }
+
 </script>
 
 
 <style scoped>
-
 </style>
