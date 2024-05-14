@@ -93,21 +93,24 @@
     </el-container>
 
     <avatar ref="avatarRef" @update-ok="getAvatar"></avatar>
+    <pwd ref="pwdRef"></pwd>
 </template>
 
 
 <script setup>
 import { CaretBottom, ArrowRight } from '@element-plus/icons-vue'
 import { ref } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter,useRoute} from 'vue-router'
 import { apiBaseUrl, localTokenName } from '@/constants'
 import { ElMessage } from 'element-plus'
+import req from '@/request/index.js'
 
 //引入自定义组件
 import avatar from '@/views/security/home/avatar.vue' 
-import req from '@/request/index.js'
-
     const avatarRef = ref(null);//avatarRef变量就代表了页面上以标签所示的avatar组件对象
+
+import pwd from "@/views/security/home/pwd.vue"
+    const pwdRef = ref(null);//pwdRef变量就代表了页面上以标签所示的pwd组件对象
 
     const router = useRouter();//路由器
 
@@ -140,7 +143,7 @@ import req from '@/request/index.js'
                 avatarRef.value.open(currentUser.value);//调用avatar组件对象的open方法
                 break;
             case 'pwd':
-                
+                pwdRef.value.open(currentUser.value);
                 break;
             case 'exit':
                 //console.log("点击了退出系统!");

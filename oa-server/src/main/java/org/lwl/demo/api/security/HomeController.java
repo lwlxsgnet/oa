@@ -7,15 +7,14 @@ import org.lwl.demo.service.HomeService;
 import org.lwl.demo.vo.MenuVo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -44,6 +43,13 @@ public class HomeController {
     public R<?> uploadAvatar(MultipartFile avatar) throws IOException {
         File file = new File(userAvatarDir, currentUser.getUserId());
         FileCopyUtils.copy(avatar.getInputStream(), new FileOutputStream(file));
+        return R.OK();
+    }
+
+    @PutMapping("/security/home/pwd")
+    public R<?> updatePassword(@RequestBody Map<String, String> pwdDto) {
+        pwdDto.put("userId", currentUser.getUserId());
+        homeService.updatePassword(pwdDto);
         return R.OK();
     }
 }
