@@ -18,6 +18,7 @@
         </template>
     </el-dialog>
 </template>
+
 <script setup>
 import { ref, reactive } from 'vue'
 import { ElMessage } from 'element-plus'
@@ -26,9 +27,14 @@ import { localTokenName } from '@/constants'
 import { useRouter } from 'vue-router'
 
     const visible = ref(false);
+    
     const open = ()=> {
         visible.value = true;
     }
+
+    defineExpose({
+        open,
+    })
 
     const data = reactive({
         old_pwd:'',
@@ -74,13 +80,8 @@ import { useRouter } from 'vue-router'
             }
         })
     }
-
-    defineExpose({
-        open,
-    });
-
 </script>
 
-<style lang="">
+<style scoped>
     
 </style>

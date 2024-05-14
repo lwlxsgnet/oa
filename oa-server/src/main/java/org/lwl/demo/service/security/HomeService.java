@@ -1,4 +1,4 @@
-package org.lwl.demo.service;
+package org.lwl.demo.service.security;
 
 import org.lwl.demo.common.currentuser.CurrentUser;
 import org.lwl.demo.vo.MenuVo;

@@ -3,7 +3,7 @@ package org.lwl.demo.api.security;
 import lombok.RequiredArgsConstructor;
 import org.lwl.demo.common.currentuser.CurrentUser;
 import org.lwl.demo.common.vo.R;
-import org.lwl.demo.service.HomeService;
+import org.lwl.demo.service.security.HomeService;
 import org.lwl.demo.vo.MenuVo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.FileCopyUtils;
@@ -46,6 +46,7 @@ public class HomeController {
         return R.OK();
     }
 
+    //为什么用 Put , 因为修改密码这个用户不变的，密码只是被覆盖掉了  符合幂等特性  而注册功能 每次用户都不一样 用Post 非幂等
     @PutMapping("/security/home/pwd")
     public R<?> updatePassword(@RequestBody Map<String, String> pwdDto) {
         pwdDto.put("userId", currentUser.getUserId());

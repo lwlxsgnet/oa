@@ -1,10 +1,10 @@
-package org.lwl.demo.service.impl;
+package org.lwl.demo.service.security.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.lwl.demo.common.currentuser.CurrentUser;
 import org.lwl.demo.common.ex.BusinessException;
 import org.lwl.demo.dao.LoginDao;
-import org.lwl.demo.service.LoginService;
+import org.lwl.demo.service.security.LoginService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

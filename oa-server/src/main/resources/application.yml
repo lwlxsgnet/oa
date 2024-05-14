@@ -27,7 +27,6 @@ oa:
     - /security/login
     - /t
     - /res/** #ant样式
-    - /user/avatars/**
   user-avatar-dir: D:/vscode/oa/avatars
 
 server:

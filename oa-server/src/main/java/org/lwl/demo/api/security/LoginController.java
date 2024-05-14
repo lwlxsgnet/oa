@@ -6,7 +6,7 @@ import org.lwl.demo.common.token.TokenUser;
 import org.lwl.demo.common.token.TokenUtils;
 import org.lwl.demo.common.verifycode.VerifyCodeUtils;
 import org.lwl.demo.common.vo.R;
-import org.lwl.demo.service.LoginService;
+import org.lwl.demo.service.security.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
