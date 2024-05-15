@@ -25,5 +25,23 @@
             </where>
     </select>
 
+    <select id="deleteDep" >
+        delete from t_dep
+        <where>
+            <foreach collection="ids" item="id" separator="or" open="" close="" >
+                d_id = #{id}
+            </foreach>
+        </where>
+    </select>
+
+    <select id="findExistsUndetermined" resultType="boolean" >
+        select count(d_id) from t_dep
+        <where>
+            d_status > 0 and
+            <foreach collection="ids" item="id" separator="or" open="(" close=")" >
+                d_id = #{id}
+            </foreach>
+        </where>
+    </select>
 
 </mapper>

@@ -11,4 +11,8 @@ public interface DepService {
     void addDep(DepDto depDto);
 
     void updateDep(DepDto depDto);
+
+    void deleteDep(Integer... ids);//为了处理多删除，使用可变长参数
+
+    void changeStatus(Integer id, Integer status);
 }

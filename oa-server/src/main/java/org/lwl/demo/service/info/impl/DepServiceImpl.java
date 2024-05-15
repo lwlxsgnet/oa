@@ -3,6 +3,7 @@ package org.lwl.demo.service.info.impl;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.lwl.demo.common.InfoStatusEnum;
+import org.lwl.demo.common.ex.BusinessException;
 import org.lwl.demo.common.page.PageVo;
 import org.lwl.demo.common.page.QueryAction;
 import org.lwl.demo.dao.DepDao;
@@ -57,5 +58,21 @@ public class DepServiceImpl implements DepService {
     @Override
     public void updateDep(DepDto depDto) {
         depDao.updateDep(depDto);
+    }
+
+    @Override
+    public void deleteDep(Integer... ids) {
+        if (ids == null || ids.length == 0) throw new BusinessException("请选择至少一条数据!");
+
+        //如果被删数据状态确定 那么需要阻止其被删除
+        Boolean exists = depDao.findExistsUndetermined(ids);
+        if (exists) throw new BusinessException("已确定,禁止删除!");
+
+        depDao.deleteDep(ids);
+    }
+
+    @Override
+    public void changeStatus(Integer id, Integer status) {
+        depDao.changeStatus(id, status);
     }
 }

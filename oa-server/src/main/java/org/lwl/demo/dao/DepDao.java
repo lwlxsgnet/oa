@@ -1,9 +1,6 @@
 package org.lwl.demo.dao;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import org.lwl.demo.dto.DepDto;
 import org.lwl.demo.dto.DepQueryDto;
 import org.lwl.demo.model.Dep;
@@ -22,4 +19,12 @@ public interface DepDao {
 
     @Update("update t_dep set d_name = #{d_name}, d_remark = #{d_remark} where d_id = #{d_id}")
     void updateDep(DepDto depDto);
+
+
+    void deleteDep(@Param("ids") Integer[] ids);
+
+    Boolean findExistsUndetermined(@Param("ids") Integer[] ids);
+
+    @Update("update t_dep set d_status = #{status} where d_id = #{id}")
+    void changeStatus(@Param("id") Integer id, @Param("status") Integer status);
 }

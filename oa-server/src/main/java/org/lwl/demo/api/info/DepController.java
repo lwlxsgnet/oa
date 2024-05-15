@@ -3,7 +3,6 @@ package org.lwl.demo.api.info;
 import lombok.RequiredArgsConstructor;
 import org.lwl.demo.common.page.PageVo;
 import org.lwl.demo.common.vo.R;
-import org.lwl.demo.dao.DepDao;
 import org.lwl.demo.dto.DepDto;
 import org.lwl.demo.dto.DepQueryDto;
 import org.lwl.demo.model.Dep;
@@ -30,6 +29,24 @@ public class DepController {
     @PutMapping("/info/dep")
     public R<?> execUpd(@RequestBody DepDto depDto) {
         depService.updateDep(depDto);
+        return R.OK();
+    }
+
+    @DeleteMapping("/info/dep/{id}")
+    public R<?> execDel(@PathVariable Integer id) {
+        depService.deleteDep(id);
+        return R.OK();
+    }
+
+    @DeleteMapping("/info/dep")
+    public R<?> execDel(@RequestBody Integer[] ids) {
+        depService.deleteDep(ids);
+        return R.OK();
+    }
+
+    @PutMapping("/info/dep/{id}/{status}")
+    public R<?> changeStatus(@PathVariable Integer id, @PathVariable Integer status) {
+        depService.changeStatus(id, status);
         return R.OK();
     }
 }

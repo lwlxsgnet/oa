@@ -23,7 +23,7 @@
         <el-form-item>
             <el-button :icon="Search" type="" @click="getPage(1)">查询</el-button>
             <el-button :icon="Plus" type="primary" @click="depaddRef.open()">新增</el-button>
-            <el-button :icon="Delete" type="danger">删除</el-button>
+            <el-button :icon="Delete" type="danger" @click="execMultiDel">删除</el-button>
         </el-form-item>
 
     </el-form>
@@ -54,10 +54,10 @@
         <el-table-column label="操作">
             <template #default="{row}">
                 <el-button v-if="row.d_status === 0" type="" size="small" @click="depupdRef.open(row)">修改</el-button>
-                <el-button v-if="row.d_status === 0" type="danger" size="small">删除</el-button>
-                <el-button v-if="row.d_status === 0" type="primary" size="small">确定</el-button>
-                <el-button v-if="row.d_status === 1 || row.d_status === 3" type="success" size="small">启用</el-button>
-                <el-button v-if="row.d_status === 2" type="info" size="small">禁用</el-button>
+                <el-button v-if="row.d_status === 0" type="danger" size="small" @click="execDel(row.d_id)">删除</el-button>
+                <el-button v-if="row.d_status === 0" type="primary" size="small" @click="changeStatus(row.d_id, 1)">确定</el-button>
+                <el-button v-if="row.d_status === 1 || row.d_status === 3" type="success" size="small" @click="changeStatus(row.d_id, 2)">启用</el-button>
+                <el-button v-if="row.d_status === 2" type="info" size="small" @click="changeStatus(row.d_id, 3)">禁用</el-button>
             </template>
         </el-table-column>
     </el-table>
@@ -78,22 +78,15 @@
     import { ref, reactive } from 'vue'
     import req from '@/request/index.js'
     import { Search, Plus, Delete } from '@element-plus/icons-vue'
+    import { ElMessage, ElMessageBox } from 'element-plus'
     //ref封装整体属性改变替换，reactive封装属性改变
-
-     //新增部门
-    import depadd from '@/views/info/dep/depadd.vue'
-    const depaddRef = ref(null);
-
-    //修改部门
-    import depupd from '@/views/info/dep/depupd.vue'
-    const depupdRef = ref(null);
 
     //定义状态映射 不变化
     const statusMap = {
         0: {text: '未确定', type: 'info'},
-        1: {text: '已确定', type: 'primary'},
-        2: {text: '启用', type: 'success'},
-        3: {text: '禁用', type: 'danger'},
+        1: {text: '已确定', type: 'primary', statusOpr: '确定'},
+        2: {text: '启用', type: 'success', statusOpr: '启用'},
+        3: {text: '禁用', type: 'danger', statusOpr: '禁用'},
     }
 
     //查询条件 ref, reactive和界面联动
@@ -131,7 +124,67 @@
         ids.value = selections.map(item=>item.d_id);
     }
 
+    
+     //新增部门
+     import depadd from '@/views/info/dep/depadd.vue'
+    const depaddRef = ref(null);
 
+    //修改部门
+    import depupd from '@/views/info/dep/depupd.vue'
+    const depupdRef = ref(null);
+
+    //单删除
+    const execDel = async id=> {
+        await ElMessageBox.confirm(
+            "您确定要删除此部门信息吗?",
+            "警告",
+            {
+                cancelButtonText: '取消',
+                confirmButtonText: '确定',
+                type: 'warning'
+            }
+        );
+        await req.delete('/info/dep/' + id);
+        getPage(page.value.current);
+        ElMessage.success("成功删除部门!");
+    }
+
+    //多删除
+    const execMultiDel = async ()=>{
+        if(!ids.value || !ids.value.length){
+            ElMessage.error("请选择至少一条数据!");
+            return;
+        }
+        await ElMessageBox.confirm(
+            "您确定要删除选中的部门信息吗?",
+            "警告",
+            {
+                cancelButtonText: '取消',
+                confirmButtonText: '确定',
+                type: 'warning'
+            }
+        )
+        await req.delete('/info/dep', {data: ids.value})
+        getPage(page.value.current);
+        ElMessage.success("成功删除部门!");
+    }
+
+    //修改部门状态
+    const changeStatus = async(id,status)=>{
+        await ElMessageBox.confirm(
+            "您选择要"+ statusMap[status].statusOpr +"部门信息吗?",
+            "警告",
+            {
+                cancelButtonText: '取消',
+                confirmButtonText: '确定',
+                type: 'warning'
+            }
+        )
+        await req.put('/info/dep/' + id + '/' + status);
+        getPage(page.value.current);
+        ElMessage.success(statusMap[status].statusOpr + "部门信息成功!");
+    }
+    
 </script>
 
 
