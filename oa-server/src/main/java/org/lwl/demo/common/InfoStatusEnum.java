@@ -30,7 +30,7 @@ public enum InfoStatusEnum {
     public static String getTextByCode(Integer code){
         InfoStatusEnum[] values = InfoStatusEnum.values();
         for(InfoStatusEnum status : values){
-            if (status.equals(code)) {
+            if (status.code.equals(code)) {
 
                 return status.text;
             }

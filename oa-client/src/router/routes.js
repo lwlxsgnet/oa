@@ -14,6 +14,14 @@ const homeChildRoutes = [//home子路由配置
         meta: {
             position: ["基础信息", "部门信息"]
         }
+    },
+    {
+        path: '/info/emp',
+        name: 'InfoEmp',
+        component: () => import("@/views/info/emp/index.vue"),
+        meta: {
+            position: ["基础信息", "员工信息"]
+        }
     }
 ];
 

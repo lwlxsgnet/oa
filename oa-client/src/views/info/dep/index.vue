@@ -51,7 +51,7 @@
                 </el-tag>
             </template>
         </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="操作" width="200">
             <template #default="{row}">
                 <el-button v-if="row.d_status === 0" type="" size="small" @click="depupdRef.open(row)">修改</el-button>
                 <el-button v-if="row.d_status === 0" type="danger" size="small" @click="execDel(row.d_id)">删除</el-button>
@@ -92,7 +92,7 @@
     //查询条件 ref, reactive和界面联动
     const query = reactive({
         pageNum: 1,
-        pageSize: 3,
+        pageSize: 5,
         d_id: '',
         d_name: '',
         d_remark: '',
