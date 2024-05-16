@@ -4,7 +4,22 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.lwl.demo.dao.RoleDao">
 
-    <select id="findRoleList" resultType="org.lwl.demo.model.Role">
+    <!-- findRoleList 映射规则 -->
+    <resultMap id="roleResultMap" type="org.lwl.demo.model.Role">
+        <id property="ro_id" column="ro_id" />
+        <result property="ro_name" column="ro_name" />
+        <collection property="funNameList" column="ro_id" ofType="string" select="findFunNameList" />
+    </resultMap>
+
+    <!-- 上面 collection 映射规则 -->
+    <select id="findFunNameList" resultType="string">
+        <!-- 根据角色编号，查询角色的权限名称-->
+        select f.f_name
+        from t_rf rf join t_fun f on rf.f_id = f.f_id
+        where rf.ro_id = #{id}
+    </select>
+
+    <select id="findRoleList" resultMap="roleResultMap">
         select ro_id, ro_name from t_role
         <where><!-- 动态查询处理 -->
             <if test="ro_id != null and ro_id != '' ">
@@ -26,4 +41,27 @@
             </foreach>
         </where>
     </select>
+
+    <!-- findAllFunList映 射规则 -->
+    <resultMap id="funResultMap" type="org.lwl.demo.vo.MenuVo">
+        <id property="menuId" column="p_id" />
+        <result property="menuName" column="p_name" />
+        <collection property="children" ofType="org.lwl.demo.vo.MenuVo">
+            <id property="menuId" column="f_id" />
+            <result property="menuName" column="f_name" />
+        </collection>
+    </resultMap>
+
+    <select id="findAllFunList" resultMap="funResultMap">
+        select p.f_id p_id, p.f_name p_name, c.f_id, c.f_name
+        from t_fun p join t_fun c on p.f_id = c.f_pid
+        where c.f_ismenu = 1
+    </select>
+
+    <insert id="insertRoleFun">
+        insert into t_rf(ro_id, f_id) values
+        <foreach collection="funIds" item="funId" separator=",">
+            (#{roleId}, #{funId})
+        </foreach>
+    </insert>
 </mapper>

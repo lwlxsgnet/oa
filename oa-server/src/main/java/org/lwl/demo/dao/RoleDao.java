@@ -4,8 +4,10 @@ import org.apache.ibatis.annotations.*;
 import org.lwl.demo.dto.RoleDto;
 import org.lwl.demo.dto.RoleQueryDto;
 import org.lwl.demo.model.Role;
+import org.lwl.demo.vo.MenuVo;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface RoleDao {
@@ -23,4 +25,13 @@ public interface RoleDao {
 
     void deleteRole(@Param("ids") Integer[] ids);
 
+    List<MenuVo> findAllFunList();
+
+    @Select("select f_id from t_rf where ro_id = #{roleId}")
+    List<Integer> findRoleFunIdsList(Integer roleId);
+
+    @Delete("delete from t_rf where ro_id = #{roleId}") // roelId 参数名参考前端传过来的
+    void deleteRoleFun(Map<String, Object> map);
+
+    void insertRoleFun(Map<String, Object> map);
 }

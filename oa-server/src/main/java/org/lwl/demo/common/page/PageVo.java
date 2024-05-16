@@ -1,11 +1,9 @@
 package org.lwl.demo.common.page;
-import com.github.pagehelper.Page;
+
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import lombok.Data;
 import lombok.Getter;
 import org.lwl.demo.common.ex.SysException;
-
 
 import java.io.Serializable;
 import java.util.List;

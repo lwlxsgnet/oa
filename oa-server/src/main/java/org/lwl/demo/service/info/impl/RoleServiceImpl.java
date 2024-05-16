@@ -10,8 +10,12 @@ import org.lwl.demo.dto.RoleDto;
 import org.lwl.demo.dto.RoleQueryDto;
 import org.lwl.demo.model.Role;
 import org.lwl.demo.service.info.RoleService;
+import org.lwl.demo.vo.MenuVo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -64,4 +68,23 @@ public class RoleServiceImpl implements RoleService {
         roleDao.deleteRole(ids);
     }
 
+    @Override
+    public List<MenuVo> getAllFunList() {
+        return roleDao.findAllFunList();
+    }
+
+    @Override
+    public List<Integer> getRoleFunIdsList(Integer roleId) {
+        return roleDao.findRoleFunIdsList(roleId);
+    }
+
+    @Override
+    public void updateRoleFun(Map<String, Object> map) {
+        //提交的权限需要又删又增
+        //统一先删再增
+        //先删除指定角色的权限
+        roleDao.deleteRoleFun(map);
+        //再增加角色的新增加权限
+        roleDao.insertRoleFun(map);
+    }
 }
