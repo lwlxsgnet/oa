@@ -25,9 +25,9 @@ public interface EmployeeDao {
     @Update("update t_emp set e_name = #{e_name}, e_sex = #{e_sex}, e_birth = #{e_birth}, d_id = #{d_id} where e_id = #{e_id}")
     void updateEmp(EmpDto empDto);
 
-    Boolean findExistsUndetermined(@Param("ids") String... ids);
-
     void deleteEmp(String[] ids);
+
+    Boolean findExistsUndetermined(@Param("ids") String... ids);
 
     @Update("update t_emp set e_status = #{status} where e_id = #{id}")
     void changeStatus(@Param("id") String id, @Param("status") Integer status);

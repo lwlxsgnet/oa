@@ -152,15 +152,15 @@
         ids.value = selections.map(item=>item.e_id);
     }
 
-    //新增部门
+    //新增员工
     import empadd from '@/views/info/emp/empadd.vue'
     const empaddRef = ref(null);
 
-    //修改部门
+    //修改员工
     import empupd from '@/views/info/emp/empupd.vue'
     const empupdRef = ref(null);
 
-    //单删除
+    //单删除员工
     const execDel = async id=> {
         await ElMessageBox.confirm(
             "您确定要删除此员工信息吗?",
@@ -176,7 +176,7 @@
         ElMessage.success("成功删除员工!");
     }
 
-    //多删除
+    //多删除员工
     const execMultiDel = async ()=>{
         if(!ids.value || !ids.value.length){
             ElMessage.error("请选择至少一条数据!");
@@ -196,7 +196,7 @@
         ElMessage.success("成功删除员工!");
     }
 
-    //修改部门状态
+    //修改员工状态
     const changeStatus = async(id,status)=>{
         await ElMessageBox.confirm(
             "您选择要"+ statusMap[status].statusOpr +"员工信息吗?",

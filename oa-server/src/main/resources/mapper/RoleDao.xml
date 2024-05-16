@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.lwl.demo.dao.RoleDao">
+
+    <select id="findRoleList" resultType="org.lwl.demo.model.Role">
+        select ro_id, ro_name from t_role
+        <where><!-- 动态查询处理 -->
+            <if test="ro_id != null and ro_id != '' ">
+                instr(ro_id, #{ro_id}) > 0
+                <!-- 模糊查询不用like(不通过索引)全局查找 instr方法看#{ro_id}是否包含在ro_id字段里 -->
+            </if>
+            <if test="ro_name != null and ro_name != '' ">
+                and instr(ro_name, #{ro_name}) > 0
+                <!-- 模糊查询不用like(不通过索引)全局查找 instr方法看#{ro_name}是否包含在ro_name字段里 -->
+            </if>
+        </where>
+    </select>
+
+    <select id="deleteRole" >
+        delete from t_role
+        <where>
+            <foreach collection="ids" item="id" separator="or" open="" close="" >
+                ro_id = #{id}
+            </foreach>
+        </where>
+    </select>
+</mapper>
