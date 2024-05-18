@@ -28,7 +28,9 @@
         <el-table-column label="权限" width="">
 
             <template #default="{row}">
-                <el-tag v-for="name in row.funNameList" :key="name" style="margin: 5px 5px;" type="">{{ name }}</el-tag>
+                <el-tag v-for="name in row.funNameList" :key="name" style="margin: 5px 5px;" type="success" effect="dark" round>
+                    {{ name }}
+                </el-tag>
             </template>
 
         </el-table-column>

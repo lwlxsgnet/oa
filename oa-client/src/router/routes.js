@@ -30,7 +30,15 @@ const homeChildRoutes = [//home子路由配置
         meta: {
             position: ["安全管理", "角色信息"]
         }
-    }
+    },
+    {
+        path: '/security/user',
+        name: 'SecurityUser',
+        component: () => import("@/views/security/user/index.vue"),
+        meta: {
+            position: ["安全管理", "用户信息"]
+        }
+    },
 ];
 
 const routes = [

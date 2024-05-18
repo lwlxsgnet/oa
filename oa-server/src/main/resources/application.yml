@@ -16,7 +16,7 @@ logging:
 pagehepler:
   # 分页合理化 访问0页回到第一页 访问15页回到10页
   reasonable: true
-  helperDialect: mysql
+  helper-dialect: mysql
 
 #自定义配置
 oa:

@@ -1,15 +1,14 @@
-package org.lwl.demo.service.info.impl;
+package org.lwl.demo.service.security.impl;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.lwl.demo.common.InfoStatusEnum;
 import org.lwl.demo.common.ex.BusinessException;
 import org.lwl.demo.common.page.PageVo;
 import org.lwl.demo.dao.RoleDao;
 import org.lwl.demo.dto.RoleDto;
 import org.lwl.demo.dto.RoleQueryDto;
 import org.lwl.demo.model.Role;
-import org.lwl.demo.service.info.RoleService;
+import org.lwl.demo.service.security.RoleService;
 import org.lwl.demo.vo.MenuVo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -84,7 +83,12 @@ public class RoleServiceImpl implements RoleService {
         //统一先删再增
         //先删除指定角色的权限
         roleDao.deleteRoleFun(map);
-        //再增加角色的新增加权限
-        roleDao.insertRoleFun(map);
+
+        List<Integer> funIds = (List<Integer>) map.get("funIds");
+
+        if (funIds != null && funIds.size() > 0){
+            //再增加角色的新增加权限
+            roleDao.insertRoleFun(map);
+        }
     }
 }

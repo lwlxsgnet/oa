@@ -73,7 +73,8 @@
                 <el-button v-if="row.e_status === 0" type="primary" size="small" @click="changeStatus(row.e_id, 1)">确定</el-button>
                 <el-button v-if="row.e_status === 1 || row.e_status === 3" type="success" size="small" @click="changeStatus(row.e_id, 2)">启用</el-button>
                 <el-button v-if="row.e_status === 2" type="info" size="small" @click="changeStatus(row.e_id, 3)">禁用</el-button>
-            </template>
+                <!-- <el-button v-if="row.e_status > 0" type="primary" size="small" @click="createUser(row.e_id)">生成账号</el-button> -->
+            </template> 
         </el-table-column>
     </el-table>
 
@@ -212,6 +213,11 @@
         ElMessage.success(statusMap[status].statusOpr + "员工信息成功!");
     }
     
+    // 生成账号
+    // const createUser = async empId =>{
+        
+    // }
+
 </script>
 
 

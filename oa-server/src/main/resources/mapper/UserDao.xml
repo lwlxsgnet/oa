@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.lwl.demo.dao.UserDao">
+
+    <!-- findUserList 映射规则 -->
+    <resultMap id="userResultMap" type="org.lwl.demo.model.User">
+        <id property="u_id" column="u_id" />
+        <result property="u_name" column="u_name" />
+        <collection property="roleNameList" column="u_id" ofType="string" select="findRoleNameList" />
+    </resultMap>
+
+    <!-- 上面 collection 映射规则 -->
+    <select id="findRoleNameList" resultType="string">
+        <!-- 根据用户编号，查询用户的角色名称  用户角色关联表和角色表-->
+        select ro.ro_name
+        from t_ur ur join t_role ro on ur.ro_id = ro.ro_id
+        where ur.u_id = #{id}
+    </select>
+
+    <select id="findUserList" resultMap="userResultMap">
+        select u_id, u_name from t_user
+        <where><!-- 动态查询处理 -->
+            <if test="u_id != null and u_id != '' ">
+                instr(u_id, #{u_id}) > 0
+                <!-- 模糊查询不用like(不通过索引)全局查找 instr方法看#{u_id}是否包含在u_id字段里 -->
+            </if>
+            <if test="u_name != null and u_name != '' ">
+                and instr(u_name, #{u_name}) > 0
+                <!-- 模糊查询不用like(不通过索引)全局查找 instr方法看#{u_name}是否包含在u_name字段里 -->
+            </if>
+        </where>
+    </select>
+
+    <select id="deleteUser" >
+        delete from t_user
+        <where>
+            <foreach collection="ids" item="id" separator="or" open="" close="" >
+                u_id = #{id}
+            </foreach>
+        </where>
+    </select>
+
+    <!-- findAllRoleList映 射规则 -->   <!-- 没有子角色，不需要映射 -->
+    <select id="findAllRoleList" resultType="org.lwl.demo.model.Role">
+        select ro_id,ro_name from t_role
+    </select>
+
+    <insert id="insertUserRole">
+        insert into t_ur(u_id, ro_id) values
+        <foreach collection="roleIds" item="roleId" separator=",">
+            (#{userId}, #{roleId})
+        </foreach>
+    </insert>
+</mapper>

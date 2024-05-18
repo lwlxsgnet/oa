@@ -6,7 +6,7 @@ import org.lwl.demo.common.vo.R;
 import org.lwl.demo.dto.RoleDto;
 import org.lwl.demo.dto.RoleQueryDto;
 import org.lwl.demo.model.Role;
-import org.lwl.demo.service.info.RoleService;
+import org.lwl.demo.service.security.RoleService;
 import org.lwl.demo.vo.MenuVo;
 import org.springframework.web.bind.annotation.*;
 
