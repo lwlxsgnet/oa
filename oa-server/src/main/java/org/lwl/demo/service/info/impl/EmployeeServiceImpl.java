@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -37,7 +38,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @PostConstruct //表示该方法在创建对象后执行，且仅一次执行 初始化方法
     public void init() {
-        id = employeeDao.findMaxNumderID();
+        id = employeeDao.findMaxNumberID();
     }
 
     private synchronized String newId() {
@@ -70,5 +71,22 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void changeStatus(String id, Integer status) {
         employeeDao.changeStatus(id, status);
+    }
+
+    @Override
+    public void createUser(Map<String, String> userIdMap) {
+        employeeDao.insertUserByEmpId(userIdMap);
+    }
+
+    @Override
+    public void cancelUser(Map<String, String> userIdMap) {
+        employeeDao.deleteUserByEmpId(userIdMap);
+    }
+
+    @Override
+    public void setLeader(Map<String, String> empIdMap) {
+        // 部门只能有一个领导，先删后增
+        employeeDao.deleteLeader(empIdMap);
+        employeeDao.insertLeader(empIdMap);
     }
 }

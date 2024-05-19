@@ -26,7 +26,6 @@ public interface UserDao {
     @Update("update t_user set u_name = #{u_name} where u_id = #{u_id}")
     void updateUser(UserDto userDto);
 
-
     void deleteUser(@Param("ids") String[] ids);
 
     List<Role> findAllRoleList();
@@ -38,4 +37,9 @@ public interface UserDao {
     void deleteUserRole(Map<String, Object> map);
 
     void insertUserRole(Map<String, Object> map);
+
+    //已分配角色的用户不允许删除 @Param 起别名
+    boolean findExistsRole(@Param("userIds") String... ids);
+
+    List<String> findAllNotNormalUser();
 }

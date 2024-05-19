@@ -64,4 +64,18 @@
             (#{roleId}, #{funId})
         </foreach>
     </insert>
+
+    <select id="findExistsUser" resultType="boolean">
+        select count(u_id) from t_ur where ro_id in
+        <foreach collection="roleIds" item="roleId" separator="," open="(" close=")">
+            #{roleId}
+        </foreach>
+    </select>
+
+    <select id="findExistsFun" resultType="boolean">
+        select count(f_id) from t_rf where ro_id in
+        <foreach collection="roleIds" item="roleId" separator="," open="(" close=")">
+            #{roleId}
+        </foreach>
+    </select>
 </mapper>

@@ -21,7 +21,14 @@
 
         <el-table-column type="selection" />
 
-        <el-table-column prop="u_id" label="账号" width="" />
+        <el-table-column prop="u_id" label="账号" width="">
+
+            <template #default="{row}"> 
+                {{ row.u_id }}
+                [<span style="color:chocolate;">{{ row.u_type === 'emp'?'员工':row.u_type === 'normal'?'普通用户':'内置用户' }}</span>]
+            </template>
+
+        </el-table-column>
 
         <el-table-column prop="u_name" label="姓名" width="" />
 
@@ -38,11 +45,11 @@
         <el-table-column label="操作" width="200">
             <template #default="{row}">
 
-                <el-button type="primary" size="small" @click="userroleRef.open(row)">角色</el-button>
+                <el-button type="primary" size="small" @click="userroleRef.open(row)" round>角色</el-button>
 
-                <el-button type="" size="small" @click="userupdRef.open(row)">修改</el-button>
+                <el-button v-if="row.u_type==='normal'" type="" size="small" @click="userupdRef.open(row)" round>修改</el-button>
 
-                <el-button type="danger" size="small" @click="execDel(row.u_id)">删除</el-button>
+                <el-button v-if="row.u_type==='normal'" type="danger" size="small" @click="execDel(row.u_id)" round>删除</el-button>
 
             </template>
         </el-table-column>

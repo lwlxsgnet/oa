@@ -53,11 +53,11 @@
         </el-table-column>
         <el-table-column label="操作" width="200">
             <template #default="{row}">
-                <el-button v-if="row.d_status === 0" type="" size="small" @click="depupdRef.open(row)">修改</el-button>
-                <el-button v-if="row.d_status === 0" type="danger" size="small" @click="execDel(row.d_id)">删除</el-button>
-                <el-button v-if="row.d_status === 0" type="primary" size="small" @click="changeStatus(row.d_id, 1)">确定</el-button>
-                <el-button v-if="row.d_status === 1 || row.d_status === 3" type="success" size="small" @click="changeStatus(row.d_id, 2)">启用</el-button>
-                <el-button v-if="row.d_status === 2" type="info" size="small" @click="changeStatus(row.d_id, 3)">禁用</el-button>
+                <el-button v-if="row.d_status === 0" type="" size="small" @click="depupdRef.open(row)" round>修改</el-button>
+                <el-button v-if="row.d_status === 0" type="danger" size="small" @click="execDel(row.d_id)" round>删除</el-button>
+                <el-button v-if="row.d_status === 0" type="primary" size="small" @click="changeStatus(row.d_id, 1)" round>确定</el-button>
+                <el-button v-if="row.d_status === 1 || row.d_status === 3" type="success" size="small" @click="changeStatus(row.d_id, 2)" round>启用</el-button>
+                <el-button v-if="row.d_status === 2" type="info" size="small" @click="changeStatus(row.d_id, 3)" round>禁用</el-button>
             </template>
         </el-table-column>
     </el-table>

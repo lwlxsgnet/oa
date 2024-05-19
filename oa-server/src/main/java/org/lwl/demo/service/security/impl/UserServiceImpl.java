@@ -13,6 +13,7 @@ import org.lwl.demo.service.security.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -62,8 +63,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(String... ids) {
-
         if (ids == null || ids.length == 0) throw new BusinessException("请选择至少一条数据!");
+
+        List<String> userIdList = userDao.findAllNotNormalUser();
+        boolean has = Arrays.stream(ids).anyMatch(id->{
+            return userIdList.stream().anyMatch(userId->userId.equals(id));
+        });
+
+        if (has) throw new BusinessException("至少一个选择为非普通用户,禁止删除!");
+
+        if (userDao.findExistsRole(ids)) throw new BusinessException("用户至少已分配一个角色,不允许删除!");
 
         userDao.deleteUser(ids);
     }
@@ -87,7 +96,7 @@ public class UserServiceImpl implements UserService {
 
         //测试BUG 全部不选的话会报错 删完没东西增加了
         List<Integer> roleIds = (List<Integer>) map.get("roleIds");
-        if (roleIds != null && roleIds.size() > 0){
+        if (roleIds != null && !roleIds.isEmpty()){
             //再增加角色的新增加权限
             userDao.insertUserRole(map);
         }

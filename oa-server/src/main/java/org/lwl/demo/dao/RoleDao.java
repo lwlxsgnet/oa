@@ -34,4 +34,8 @@ public interface RoleDao {
     void deleteRoleFun(Map<String, Object> map);
 
     void insertRoleFun(Map<String, Object> map);
+
+    boolean findExistsUser(@Param("roleIds") Integer... ids);
+
+    boolean findExistsFun(@Param("roleIds") Integer... ids);
 }

@@ -1,6 +1,5 @@
 package org.lwl.demo.api.info;
 
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.lwl.demo.common.page.PageVo;
 import org.lwl.demo.common.vo.R;
@@ -12,6 +11,7 @@ import org.lwl.demo.service.info.EmployeeService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -59,6 +59,24 @@ public class EmployeeController {
     @PutMapping("/info/emp/{id}/{status}")
     public R<?> changeStatus(@PathVariable String id, @PathVariable Integer status) {
         employeeService.changeStatus(id, status);
+        return R.OK();
+    }
+
+    @PostMapping("/info/emp/user")
+    public R<?> createUser(@RequestBody Map<String, String> userIdMap) {
+        employeeService.createUser(userIdMap);
+        return R.OK();
+    }
+
+    @DeleteMapping("/info/emp/user")
+    public R<?> cancelUser(@RequestBody Map<String, String> userIdMap) {
+        employeeService.cancelUser(userIdMap);
+        return R.OK();
+    }
+
+    @PutMapping("/info/emp/leader")
+    public R<?> setLeader(@RequestBody Map<String, String> empIdMap) {
+        employeeService.setLeader(empIdMap);
         return R.OK();
     }
 }

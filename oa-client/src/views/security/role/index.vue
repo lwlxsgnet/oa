@@ -38,11 +38,11 @@
         <el-table-column label="操作" width="200">
             <template #default="{row}">
 
-                <el-button type="primary" size="small" @click="rolefunRef.open(row)">权限</el-button>
+                <el-button type="primary" size="small" @click="rolefunRef.open(row)" round>权限</el-button>
 
-                <el-button type="" size="small" @click="roleupdRef.open(row)">修改</el-button>
+                <el-button type="" size="small" @click="roleupdRef.open(row)" round>修改</el-button>
 
-                <el-button type="danger" size="small" @click="execDel(row.ro_id)">删除</el-button>
+                <el-button type="danger" size="small" @click="execDel(row.ro_id)" round>删除</el-button>
 
             </template>
         </el-table-column>

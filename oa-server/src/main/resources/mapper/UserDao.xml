@@ -8,6 +8,7 @@
     <resultMap id="userResultMap" type="org.lwl.demo.model.User">
         <id property="u_id" column="u_id" />
         <result property="u_name" column="u_name" />
+        <result property="u_type" column="u_type" />
         <collection property="roleNameList" column="u_id" ofType="string" select="findRoleNameList" />
     </resultMap>
 
@@ -20,7 +21,15 @@
     </select>
 
     <select id="findUserList" resultMap="userResultMap">
-        select u_id, u_name from t_user
+        select
+            u.u_id,
+            u.u_name,
+            case
+                when instr(u.u_id, 'U') = 1 and length(u.u_id) = 6 then 'normal'
+                when exists(select e_id from t_emp where e_id = u.u_id) then 'emp'
+                else 'inner'
+            end u_type
+        from t_user u
         <where><!-- 动态查询处理 -->
             <if test="u_id != null and u_id != '' ">
                 instr(u_id, #{u_id}) > 0
@@ -53,4 +62,17 @@
             (#{userId}, #{roleId})
         </foreach>
     </insert>
+
+    <select id="findExistsRole" resultType="boolean">
+        select count(u_id) from t_ur where u_id in
+        <foreach collection="userIds" item="userId" separator="," open="(" close=")">
+            #{userId}
+        </foreach>
+    </select>
+
+    <select id="findAllNotNormalUser" resultType="string">
+        select u_id from t_user u
+        where exists(select e_id from t_emp where e_id = u.u_id) or (not instr(u.u_id, 'U')=1 and length(u.u_id)=6)
+    </select>
+
 </mapper>

@@ -52,36 +52,62 @@
 
     <el-table :data="page.list" @selection-change="onSelectionChange">
         <el-table-column type="selection"/>
-        <el-table-column prop="e_id" label="工号" width="125"/>
-        <el-table-column prop="e_name" label="姓名" width="180"/>
-        <el-table-column prop="e_sex" label="性别" width="80">
+
+        <el-table-column label="工号" width="180"> <!-- 后期处理员工生成账号时，取消了 prop = 'e_id' -->
+            <template #default="{row}">
+                {{ row.e_id }}
+                <span v-if="row.account" style="color: brown;">(登录账号)</span>
+            </template>
+        </el-table-column>
+
+        <el-table-column prop="e_name" label="姓名" width="200">
+            <template #default="{row}">
+                {{ row.e_name }}
+                <span v-if="row.leader" style="color: teal;">(部门领导)</span>
+            </template>
+        </el-table-column>
+
+        <el-table-column prop="e_sex" label="性别" width="120">
             <template #default="{row}">
                 {{ row.e_sex == 1? "男":"女" }}
             </template>
         </el-table-column>
+
         <el-table-column prop="e_birth" label="出生日期"/>
+
         <el-table-column prop="d_name" label="部门"/>
+
         <el-table-column label="状态">
             <template #default="{row}">
-                <el-tag :type="statusMap[row.e_status].type">{{ row.e_status_name }}</el-tag>
+                <el-tag :type="statusMap[row.e_status].type" round>{{ row.e_status_name }}</el-tag>
             </template>
         </el-table-column>
-        <el-table-column label="操作" width="200">
+
+        <el-table-column label="操作" width="250">
             <template #default="{row}">
-                <el-button v-if="row.e_status === 0" type="" size="small" @click="empupdRef.open(depList, row)">修改</el-button>
-                <el-button v-if="row.e_status === 0" type="danger" size="small" @click="execDel(row.e_id)">删除</el-button>
-                <el-button v-if="row.e_status === 0" type="primary" size="small" @click="changeStatus(row.e_id, 1)">确定</el-button>
-                <el-button v-if="row.e_status === 1 || row.e_status === 3" type="success" size="small" @click="changeStatus(row.e_id, 2)">启用</el-button>
-                <el-button v-if="row.e_status === 2" type="info" size="small" @click="changeStatus(row.e_id, 3)">禁用</el-button>
-                <!-- <el-button v-if="row.e_status > 0" type="primary" size="small" @click="createUser(row.e_id)">生成账号</el-button> -->
+                <el-button v-if="row.e_status === 0" type="" size="small" @click="empupdRef.open(depList, row)" round>修改</el-button>
+                <el-button v-if="row.e_status === 0" type="danger" size="small" @click="execDel(row.e_id)" round>删除</el-button>
+                <el-button v-if="row.e_status === 0" type="primary" size="small" @click="changeStatus(row.e_id, 1)" round>确定</el-button>
+                <el-button v-if="row.e_status === 1 || row.e_status === 3" type="success" size="small" @click="changeStatus(row.e_id, 2)" round>启用</el-button>
+                <el-button v-if="row.e_status === 2" type="info" size="small" @click="changeStatus(row.e_id, 3)" round>禁用</el-button>
+                <el-button v-if="row.e_status > 0 && !row.account" type="primary" size="small" @click="createUser(row.e_id)" round>生成账号</el-button>
+                <el-button v-if="row.e_status > 0 && row.account" type="warning" size="small" @click="cancelUser(row.e_id)" round>撤销账号</el-button>
+                <el-button v-if="row.e_status === 2 && !row.leader" type="" size="small" @click="setLeader(row.e_id)" round>设置领导</el-button>
+                
             </template> 
         </el-table-column>
+
     </el-table>
 
     <!-- 分页组件 -->
-    <el-pagination :page-sizes="[5, 10, 20, 50, 100]" layout="prev, pager, next, jumper, ->, sizes, total"
-                   :total="page.total" v-model:page-size="query.pageSize" v-model:current-page="query.pageNum" 
-                   @current-change="getPage" @size-change="getPage(1)" style="margin-top: 10px;"/>
+    <el-pagination :page-sizes="[5, 10, 20, 50, 100, 200, 500]" 
+                   layout="prev, pager, next, jumper, ->, sizes, total"
+                   :total="page.total" 
+                   v-model:page-size="query.pageSize" 
+                   v-model:current-page="query.pageNum" 
+                   @current-change="getPage" 
+                   @size-change="getPage(1)" 
+                   style="margin-top: 10px;"/>
 
 
     <!-- 新增员工 -->
@@ -214,9 +240,54 @@
     }
     
     // 生成账号
-    // const createUser = async empId =>{
-        
-    // }
+    const createUser = async empId =>{
+        await ElMessageBox.confirm(
+            "您确定要为工号为"+ empId +"的员工生成账号吗?",
+            "警告",
+            {
+                cancelButtonText: '取消',
+                confirmButtonText: '确定',
+                type: 'warning'
+            }
+        )
+        await req.post('info/emp/user', {empId}); //提交JSNON数据，empId为名，empId.value为值
+        getPage(page.value.current);
+        ElMessage.success("成功生成员工账号");
+    }
+
+    // 撤销账号
+    const cancelUser = async empId =>{
+        await ElMessageBox.confirm(
+            "您确定要撤销工号为"+ empId +"的员工账号吗?",
+            "警告",
+            {
+                cancelButtonText: '取消',
+                confirmButtonText: '确定',
+                type: 'warning'
+            }
+        )
+        await req.delete('info/emp/user', {data: { empId }}); //注意和生成账号的区别，传输数据方式不一样
+        getPage(page.value.current);
+        ElMessage.success("成功撤销员工账号");
+    }
+
+    // 设置为领导账号
+    const setLeader = async empId =>{
+        await ElMessageBox.confirm(
+            "您确定要将工号"+ empId +"的员工设置为部门领导吗?",
+            "警告",
+            {
+                cancelButtonText: '取消',
+                confirmButtonText: '确定',
+                type: 'warning'
+            }
+        )
+        await req.put('info/emp/leader', { empId }); //与前两个对比，put post直接传， delete需要另外的格式
+        getPage(page.value.current);
+        ElMessage.success("成功设置该账号为部门领导");
+    }
+
+  
 
 </script>
 

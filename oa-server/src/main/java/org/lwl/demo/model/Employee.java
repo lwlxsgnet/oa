@@ -17,6 +17,12 @@ public class Employee {
     private Integer d_id;
     private String d_name;
 
+    // 工号是否是登录账号
+    private boolean account;
+
+    // 工号是否是部门领导账号
+    private boolean leader;
+
     public String getE_status_name() {
         if (e_status == null) return null;
         return InfoStatusEnum.getTextByCode(e_status);//枚举类根据状态代码得到名字

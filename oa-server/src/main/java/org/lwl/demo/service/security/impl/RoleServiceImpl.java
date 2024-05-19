@@ -25,14 +25,13 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public PageVo<Role> getRolePage(RoleQueryDto roleQueryDto) {
 
-//        QueryAction<Role> action = new QueryAction<Role>() {
-//            @Override
-//            public List<Role> executeQuery() throws Exception {
-//                return roleDao.findRoleList(roleQueryDto);
-//            }
-//        };
-
-//        QueryAction<Role> action = ()->roleDao.findRoleList(roleQueryDto);
+        // QueryAction<Role> action = new QueryAction<Role>() {
+        //     @Override
+        //     public List<Role> executeQuery() throws Exception {
+        //         return roleDao.findRoleList(roleQueryDto);
+        //     }
+        // };
+        //  QueryAction<Role> action = ()->roleDao.findRoleList(roleQueryDto);
 
         return PageVo.getPageVo(roleQueryDto, ()->roleDao.findRoleList(roleQueryDto));//第二个参数可用action替代
     }
@@ -61,9 +60,9 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public void deleteRole(Integer... ids) {
-
         if (ids == null || ids.length == 0) throw new BusinessException("请选择至少一条数据!");
-
+        if (roleDao.findExistsUser(ids)) throw new BusinessException("存在角色已被用户使用,无法删除!");
+        if (roleDao.findExistsFun(ids)) throw new BusinessException("存在角色已有权限,无法删除!");
         roleDao.deleteRole(ids);
     }
 
@@ -86,8 +85,8 @@ public class RoleServiceImpl implements RoleService {
 
         List<Integer> funIds = (List<Integer>) map.get("funIds");
 
-        if (funIds != null && funIds.size() > 0){
-            //再增加角色的新增加权限
+        if (funIds != null && !funIds.isEmpty()){
+            //再增加角色的新增加的权限
             roleDao.insertRoleFun(map);
         }
     }

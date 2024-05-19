@@ -7,6 +7,7 @@ import org.lwl.demo.model.Dep;
 import org.lwl.demo.model.Employee;
 
 import java.util.List;
+import java.util.Map;
 
 public interface EmployeeService {
     PageVo<Employee> getEmployeePage(EmpQueryDto empQueryDto);
@@ -15,4 +16,10 @@ public interface EmployeeService {
     void updateEmp(EmpDto empDto);
     void deleteEmp(String... ids);
     void changeStatus(String id, Integer status);
+
+    void createUser(Map<String, String> userIdMap);
+
+    void cancelUser(Map<String, String> userIdMap);
+
+    void setLeader(Map<String, String> empIdMap);
 }

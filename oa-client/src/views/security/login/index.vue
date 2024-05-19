@@ -22,7 +22,7 @@
                 </el-form-item>
 
                 <el-form-item label="">
-                    <el-button type="primary" style="flex: auto; width: auto;" round @click="login">Log in</el-button>
+                    <el-button type="primary" style="flex: auto; width: auto;" @click="login" round>Log in</el-button>
                 </el-form-item>
             </el-form>
         </div>
