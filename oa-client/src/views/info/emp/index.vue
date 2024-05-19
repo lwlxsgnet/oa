@@ -224,7 +224,7 @@
     }
 
     //修改员工状态
-    const changeStatus = async(id,status)=>{
+    const changeStatus = async(id, status)=>{
         await ElMessageBox.confirm(
             "您选择要"+ statusMap[status].statusOpr +"员工信息吗?",
             "警告",

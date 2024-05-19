@@ -30,6 +30,8 @@
         </template>
     </el-dialog>
 </template>
+
+
 <script setup>
     import { ref, reactive } from 'vue'
     import req from '@/request/index.js'
@@ -74,7 +76,7 @@
         // data.e_sex = '';
         // data.e_birth = '';
         // data.d_id = '';
-        // 注释的原因是修改了每次重新加载数据，可是为什么部门修改要清空？？？
+        // 注释的原因是修改了每次重新加载数据，可是为什么部门修改要清空？？？   猜测是index页引用组件时@upd-ok重新刷新了页面
         visible.value = false;
         ElMessage.success("员工信息修改成功!");
     }

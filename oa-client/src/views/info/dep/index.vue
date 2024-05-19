@@ -170,7 +170,7 @@
     }
 
     //修改部门状态
-    const changeStatus = async(id,status)=>{
+    const changeStatus = async(id, status)=>{
         await ElMessageBox.confirm(
             "您选择要"+ statusMap[status].statusOpr +"部门信息吗?",
             "警告",

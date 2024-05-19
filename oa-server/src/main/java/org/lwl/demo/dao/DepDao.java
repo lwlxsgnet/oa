@@ -25,6 +25,6 @@ public interface DepDao {
 
     Boolean findExistsUndetermined(@Param("ids") Integer[] ids);
 
-    @Update("update t_emp set e_status = #{status} where e_id = #{id}")
+    @Update("update t_dep set d_status = #{status} where d_id = #{id}")
     void changeStatus(@Param("id") Integer id, @Param("status") Integer status);
 }

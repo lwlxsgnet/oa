@@ -65,11 +65,11 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(String... ids) {
         if (ids == null || ids.length == 0) throw new BusinessException("请选择至少一条数据!");
 
+        // 如果是内置用户或者员工账户 则不允许删除
         List<String> userIdList = userDao.findAllNotNormalUser();
         boolean has = Arrays.stream(ids).anyMatch(id->{
             return userIdList.stream().anyMatch(userId->userId.equals(id));
         });
-
         if (has) throw new BusinessException("至少一个选择为非普通用户,禁止删除!");
 
         if (userDao.findExistsRole(ids)) throw new BusinessException("用户至少已分配一个角色,不允许删除!");
