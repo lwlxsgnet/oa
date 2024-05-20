@@ -47,6 +47,14 @@ const homeChildRoutes = [//home子路由配置
             position: ["请假", "请假申请和销假"]
         }
     },
+    {
+        path: '/leave/exam',
+        name: 'LeaveExam',
+        component: () => import("@/views/leave/exam/index.vue"),
+        meta: {
+            position: ["请假", "请假审批"]
+        }
+    },
 ];
 
 const routes = [

@@ -36,12 +36,22 @@ public interface EmployeeDao {
     @Insert("insert into t_user(u_id, u_name, u_pwd) select e_id, e_name, '123456' from t_emp where e_id = #{empId}")
     void insertUserByEmpId(Map<String, String> userIdMap);
 
+    // 直接删除用户删除报错， 是因为用户已有角色
+    @Delete("delete from t_ur where u_id = #{empId}")
+    void deleteUserRole(Map<String, String> userIdMap);
+
+    // 那么需要删除用户的时候也把相应的角色删除掉
     @Delete("delete from t_user where u_id = #{empId}")
     void deleteUserByEmpId(Map<String, String> userIdMap);
+
+    // 另外如果设置了领导，同时领导账号也得禁用
+    @Delete("delete from t_mgr where leader_id = #{id}")
+    void deleteLeaderByEmpId(String id);
 
     @Delete("delete from t_mgr where dep_id = (select d_id from t_emp where e_id = #{empId})")
     void deleteLeader(Map<String, String> empIdMap);
 
     @Insert("insert into t_mgr(dep_id, leader_id) select d_id, e_id from t_emp where e_id = #{empId}")
     void insertLeader(Map<String, String> empIdMap);
+
 }

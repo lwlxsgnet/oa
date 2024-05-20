@@ -23,7 +23,7 @@
             <el-button :icon="Delete" type="danger" @click="execMultiDel">删除</el-button>
         </el-form-item>
     </el-form>
-    {{ ids }}
+    <!-- {{ ids }} -->
     <oa-table :page="page" :query="query" :getPage="getPage">
 
         <el-table :data="page.list" @selection-change="onSelectionChange">
@@ -56,7 +56,7 @@
                     </template>
                     <template v-if="row.l_status === 3">     <!-- 请假已批准时显示 -->
                         <el-tooltip content="销假" effect="light">
-                            <el-button :icon="Back" type="primary" size="small" circle></el-button>
+                            <el-button :icon="Back" type="primary" size="small" circle @click="execBack(row.l_id)"></el-button>
                         </el-tooltip>
                     </template>
                 </template>
@@ -178,6 +178,22 @@
         await req.put('/leave/apprev/submit/' + id);
         getPage(page.value.current);
         ElMessage.success("成功提交请假申请单!");
+    }
+
+    // 执行销假
+    const execBack = async id=> {
+        await ElMessageBox.confirm(
+            "您确定要销假吗?",
+            "警告",
+            {
+                cancelButtonText: '取消',
+                confirmButtonText: '确定',
+                type: 'warning'
+            }
+        );
+        await req.put('/leave/apprev/back/' + id);
+        getPage(page.value.current);
+        ElMessage.success("成功销假!");
     }
 
 </script>

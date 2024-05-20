@@ -65,4 +65,9 @@ public class ApprevController {
         return R.OK();
     }
 
+    @PutMapping("/leave/apprev/back/{id}")
+    public R<?> execBack(@PathVariable Long id) {
+        apprevService.backLeave(id);
+        return R.OK();
+    }
 }

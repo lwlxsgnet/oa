@@ -16,4 +16,6 @@ public interface ApprevService {
     void deleteLeave(Long... ids);
 
     void submitLeave(Long id);
+
+    void backLeave(Long id);
 }

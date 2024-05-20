@@ -39,8 +39,7 @@
                 <div style="position: absolute; right: 100px; top: 2.5%;">
                     <el-dropdown @command="handleCommand">
                         <span style="border: none; outline: none; cursor: pointer;">
-                            <!-- [id:{{ currentUser.userId }}]  -->
-                            {{ currentUser.userName }}
+                            [{{ currentUser.userId }}]:[{{ currentUser.userName }}]
                             <el-icon class="el-icon-right">
                                 <CaretBottom />
                             </el-icon>

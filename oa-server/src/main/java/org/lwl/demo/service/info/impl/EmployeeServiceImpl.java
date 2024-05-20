@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -70,6 +71,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void changeStatus(String id, Integer status) {
+        // 如果status为禁用状态，那么还需要进行撤销账号操作 另外如果设置了领导，同时领导账号也得禁用
+        if (InfoStatusEnum.disabled.getCode().equals(status)) {
+            Map<String, String> empIdMap = new HashMap<>();
+            empIdMap.put("empId", id);
+            this.cancelUser(empIdMap);  // 删除生成账号
+
+            employeeDao.deleteLeaderByEmpId(id); //删除领导
+        }
         employeeDao.changeStatus(id, status);
     }
 
@@ -80,6 +89,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void cancelUser(Map<String, String> userIdMap) {
+        // 直接删除用户删除报错， 是因为用户已有角色
+        // 那么需要删除用户的时候也把相应的角色删除掉
+        employeeDao.deleteUserRole(userIdMap);
         employeeDao.deleteUserByEmpId(userIdMap);
     }
 

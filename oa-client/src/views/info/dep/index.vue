@@ -35,7 +35,7 @@
         <el-table-column label="备注">
             <template #default="{row}">
                 <span v-if="row.d_remark?.length <= 15">{{ row.d_remark }}</span>
-                <span v-else-if="!row.d_remark?.length">null</span>
+                <span v-else-if="!row.d_remark?.length">——</span>
                 <span v-else>
                     <el-popover effect="dark" palcement="top-start" :width="270" :content="row.d_remark" trigger="hover">
                         <template #reference>

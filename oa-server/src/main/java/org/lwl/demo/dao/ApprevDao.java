@@ -1,9 +1,6 @@
 package org.lwl.demo.dao;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import org.lwl.demo.dto.LeaveDto;
 import org.lwl.demo.dto.LeaveQueryDto;
 import org.lwl.demo.model.Leave;
@@ -27,4 +24,7 @@ public interface ApprevDao {
 
     @Update("update t_leave set l_status = #{l_status}, l_submit_date = now() where l_id = #{l_id}")
     void updateLeaveStatus(@Param("l_id") Long id, @Param("l_status") int code);
+
+    @Update("update t_leave set l_status = #{l_status}, l_back_date = now() where l_id = #{l_id}")
+    void backLeave(@Param("l_id") Long id, @Param("l_status") int code);
 }

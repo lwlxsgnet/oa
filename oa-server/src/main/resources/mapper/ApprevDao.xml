@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.lwl.demo.dao.ApprevDao">
-    <!-- 这个查询所有请假列表和员工姓名 -->
+    <!-- 查询所有请假列表和员工姓名 -->
     <!-- if 语句表示模糊查询  -->
     <select id="findApprevList" resultType="org.lwl.demo.model.Leave">
         select l.*, e.e_name from t_leave l join t_emp e on l.e_id = e.e_id

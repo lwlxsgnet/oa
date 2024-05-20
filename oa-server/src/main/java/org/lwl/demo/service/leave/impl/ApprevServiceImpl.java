@@ -49,4 +49,9 @@ public class ApprevServiceImpl implements ApprevService {
     public void submitLeave(Long id) {
         apprevDao.updateLeaveStatus(id, LeaveStatusEnum.SUBMITED.getCode());
     }
+
+    @Override
+    public void backLeave(Long id) {
+        apprevDao.backLeave(id, LeaveStatusEnum.REVERSE.getCode());
+    }
 }

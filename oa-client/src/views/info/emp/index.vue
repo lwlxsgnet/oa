@@ -90,7 +90,7 @@
                 <el-button v-if="row.e_status === 0" type="primary" size="small" @click="changeStatus(row.e_id, 1)" round>确定</el-button>
                 <el-button v-if="row.e_status === 1 || row.e_status === 3" type="success" size="small" @click="changeStatus(row.e_id, 2)" round>启用</el-button>
                 <el-button v-if="row.e_status === 2" type="info" size="small" @click="changeStatus(row.e_id, 3)" round>禁用</el-button>
-                <el-button v-if="row.e_status > 0 && !row.account" type="primary" size="small" @click="createUser(row.e_id)" round>生成账号</el-button>
+                <el-button v-if="row.e_status === 2 && !row.account" type="primary" size="small" @click="createUser(row.e_id)" round>生成账号</el-button>
                 <el-button v-if="row.e_status > 0 && row.account" type="warning" size="small" @click="cancelUser(row.e_id)" round>撤销账号</el-button>
                 <el-button v-if="row.e_status === 2 && !row.leader" type="" size="small" @click="setLeader(row.e_id)" round>设置领导</el-button>
                 
